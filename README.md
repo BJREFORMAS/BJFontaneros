@@ -74,18 +74,32 @@ No modificar permisos ni configuración de Zoho sin auditoría previa.
 
 ## Seguridad de dependencias
 
-### PENDIENTE — Dependabot
+### RESUELTO — Dependabot
 
-#### #114 — braces
-Cadena verificada: `sass@1.81.0 → @parcel/watcher@2.5.0 → micromatch@4.0.8 → braces@3.0.3`.
-No se encontraron referencias a `braces`, `micromatch` ni `@parcel/watcher` dentro de `dist/`.
-Clasificación actual: dependencia transitiva asociada al entorno de build, sin evidencia de exposición directa en el contenido estático publicado.
+Estado actual verificado: **0 alertas Dependabot abiertas**.
 
-#### #115 — http-cache-semantics
-Cadena verificada: `astro@7.3.5 → http-cache-semantics@4.2.0`.
+#### #114 — braces — RESUELTA
+Estado previo verificado: `sass@1.81.0 → @parcel/watcher@2.5.0 → micromatch@4.0.8 → braces@3.0.3`.
+La dependencia vulnerable estaba asociada al entorno de build y no se encontraron referencias a `braces`, `micromatch` ni `@parcel/watcher` dentro de `dist/`.
+
+Remediación aplicada:
+- `@parcel/watcher` actualizado de `2.5.0` a `2.6.0`.
+- Eliminada la cadena transitiva `micromatch → braces`.
+- Build validado correctamente.
+- PR #4 fusionado y despliegue de producción completado correctamente.
+- Alerta cerrada automáticamente por Dependabot.
+
+#### #115 — http-cache-semantics — RESUELTA
+Estado previo verificado: `astro@7.3.5 → http-cache-semantics@4.2.0`.
 No se encontraron referencias a `http-cache-semantics` dentro de `dist/`.
-Clasificación actual: dependencia transitiva de Astro, sin evidencia de exposición directa en el sitio estático publicado.
-Las alertas #114 y #115 deben permanecer abiertas hasta disponer de una remediación segura. No usar `Dismiss alert` únicamente para ocultarlas.
+
+Remediación aplicada:
+- `http-cache-semantics` actualizado de `4.2.0` a `4.3.0`.
+- `astro@7.3.5` continúa como dependencia principal.
+- `npm audit` validado con **0 vulnerabilidades** tras la actualización.
+- Build validado correctamente.
+- PR #5 fusionado y despliegue de producción completado correctamente.
+- Alerta cerrada automáticamente por Dependabot.
 
 ## Deuda técnica SCSS / Sass
 
@@ -123,6 +137,6 @@ Baseline auditado: **03/10/2026**
 - WebToLead → Zoho CRM: CONFIRMADO
 - Workflow Zoho → correo: CONFIRMADO
 - Redirección `/gracias`: PENDIENTE
-- Dependabot #114: PENDIENTE DE REMEDIACIÓN
-- Dependabot #115: PENDIENTE DE REMEDIACIÓN
+- Dependabot #114: RESUELTO
+- Dependabot #115: RESUELTO
 - Migración Sass `@import`: PENDIENTE / DEUDA TÉCNICA
