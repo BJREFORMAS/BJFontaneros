@@ -25,7 +25,7 @@ Sitio en producción: https://bjreformas.com/
 - Astro
 - TypeScript
 - SCSS / Sass
-- Bootstrap 5.3.3
+- Bootstrap 5.3.8
 - GitHub Actions
 - GitHub Pages
 
@@ -34,7 +34,7 @@ Versiones verificadas durante la auditoría:
 - `astro@7.3.5`
 - `vite@8.3.1`
 - `sass@1.81.0`
-- `bootstrap@5.3.3`
+- `bootstrap@5.3.8`
 
 ## Desarrollo local
 
@@ -104,14 +104,44 @@ Remediación aplicada:
 ## Deuda técnica SCSS / Sass
 
 ### CONFIRMADO
+
 `src/styles/global.scss` utiliza actualmente `@import` para cargar módulos de Bootstrap, variables propias y estilos del proyecto.
-El build funciona correctamente.
-Con `--quiet-deps`, desaparecen los avisos procedentes de dependencias externas, pero permanecen las advertencias de depreciación de `@import` del código raíz.
+
+La configuración actual depende del orden y del ámbito global de Sass:
+
+- `_variables.scss` define overrides propios de Bootstrap, incluyendo `$primary`, `$secondary`, `$navbar-nav-link-padding-x` y `$offcanvas-horizontal-width`.
+- `_style.scss` utiliza `$primary` y el mixin de Bootstrap `media-breakpoint-down()`.
+- Los módulos de Bootstrap se cargan de forma selectiva y en un orden concreto desde `global.scss`.
+
+El build funciona correctamente con `sass@1.81.0` y `bootstrap@5.3.8`, aunque mantiene advertencias de depreciación relacionadas con `@import` y con SCSS interno de Bootstrap.
+
+### PRUEBA NO INTEGRADA — Sass 1.105.1
+
+Se probó de forma aislada la actualización de `sass@1.81.0` a `sass@1.105.1`.
+
+Resultado verificado:
+
+- El build continuó funcionando correctamente.
+- `npm audit` permaneció en 0 vulnerabilidades.
+- Sass pasó a utilizar `chokidar@5.0.0` y `readdirp@5.1.1`.
+- Los avisos repetitivos de depreciación aumentaron de 188 a 248.
+- Aparecieron nuevas advertencias `if-function` procedentes del SCSS de Bootstrap.
+- La actualización no resolvió la deuda asociada a `@import`.
+
+La prueba fue revertida completamente y `sass@1.105.1` no se integró en `master`.
 
 ### PENDIENTE
-Migrar en una intervención específica desde `@import` hacia `@use` / `@forward`.
-La migración debe realizarse en una rama independiente, con build completo, comparación visual y validación de Bootstrap.
-No realizar esta migración directamente sobre `master`.
+
+No realizar una sustitución mecánica de `@import` por `@use` / `@forward`.
+
+La futura migración SCSS debe diseñar explícitamente cómo se gestionarán:
+
+- los overrides de variables de Bootstrap;
+- los mixins utilizados por estilos propios;
+- el orden de carga de módulos;
+- la compatibilidad visual y funcional de los componentes Bootstrap.
+
+La intervención deberá realizarse en una rama independiente, con build completo, comparación visual y validación funcional antes de cualquier integración en `master`.
 
 ## Política de cambios
 - No modificar producción directamente.
